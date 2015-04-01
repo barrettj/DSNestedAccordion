@@ -55,12 +55,16 @@
         }
         NSInteger rowCount = [self tableView:tableView noOfChildRowsForCellAtPath:path];
 
-        [self insertInto:tableView itemsOfCount:rowCount atIndex:indexOfClickedCellWithinLevel withinLevel:level];
+        BOOL alreadyHandled = [self tableView:tableView didSelectRowAtDSCellPath:path final:(rowCount == 0)];
+        
+        if (!alreadyHandled) {
+            [self insertInto:tableView itemsOfCount:rowCount atIndex:indexOfClickedCellWithinLevel withinLevel:level];
 
-        NSInteger indexFromRootLevel = [topCellLevel flattenedIndexOfCellInLevel:level atIndex:indexOfClickedCellWithinLevel];
-        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexFromRootLevel inSection:0];
+            NSInteger indexFromRootLevel = [topCellLevel flattenedIndexOfCellInLevel:level atIndex:indexOfClickedCellWithinLevel];
+            NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexFromRootLevel inSection:0];
 
-        [tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            [tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
     }
 }
 
@@ -93,6 +97,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)view cellForPath:(DSCellPath *)path {
     @throw [NSException dsMethodNotOverridden:NSStringFromSelector(_cmd)];
+}
+
+- (BOOL)tableView:(UITableView *)view didSelectRowAtDSCellPath:(DSCellPath *)path final:(BOOL)final {
+    return NO;
 }
 
 @end

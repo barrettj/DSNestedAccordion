@@ -18,4 +18,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)view cellForPath:(DSCellPath *)path;
 
+- (BOOL)tableView:(UITableView *)view didSelectRowAtDSCellPath:(DSCellPath *)path final:(BOOL)final;
+
 @end
